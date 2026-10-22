@@ -72,6 +72,7 @@ import android.view.inputmethod.ExtractedText;
 import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
+import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodSubtype;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -3028,6 +3029,10 @@ public class LatinIME extends InputMethodService implements
         String lang = subtype == null ? null : subtype.getExtraValueOf("hk_lang");
         if (TextUtils.isEmpty(lang) || mLanguageSwitcher == null) return;
         if (lang.equals(mLanguageSwitcher.getInputLanguage())) return;
+        // Only follow languages the user enabled in the system settings. The system also
+        // reports implicitly chosen subtypes (matching the system locale), which must not
+        // override the language selected inside the keyboard.
+        if (findExplicitSubtype(lang) == null) return;
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String selected = prefs.getString(PREF_SELECTED_LANGUAGES, "");
@@ -3049,6 +3054,37 @@ public class LatinIME extends InputMethodService implements
         toggleLanguage(true, true);
     }
 
+    private InputMethodInfo getOwnInputMethodInfo() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        if (imm == null) return null;
+        for (InputMethodInfo info : imm.getInputMethodList()) {
+            if (getPackageName().equals(info.getPackageName())) return info;
+        }
+        return null;
+    }
+
+    /** The subtype for a keyboard language, if the user explicitly enabled it. */
+    private InputMethodSubtype findExplicitSubtype(String lang) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        InputMethodInfo info = getOwnInputMethodInfo();
+        if (imm == null || info == null || lang == null) return null;
+        for (InputMethodSubtype subtype : imm.getEnabledInputMethodSubtypeList(info, false)) {
+            if (lang.equals(subtype.getExtraValueOf("hk_lang"))) return subtype;
+        }
+        return null;
+    }
+
+    /** Tell the system about a language switched inside the keyboard, if it has a subtype. */
+    private void syncSystemSubtype() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P || mLanguageSwitcher == null) return;
+        InputMethodSubtype subtype = findExplicitSubtype(mLanguageSwitcher.getInputLanguage());
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        InputMethodInfo info = getOwnInputMethodInfo();
+        if (subtype == null || imm == null || info == null) return;
+        if (subtype.equals(imm.getCurrentInputMethodSubtype())) return;
+        switchInputMethod(info.getId(), subtype);
+    }
+
     void toggleLanguage(boolean reset, boolean next) {
         if (reset) {
             mLanguageSwitcher.reset();
@@ -3066,6 +3102,7 @@ public class LatinIME extends InputMethodService implements
                 mEnableVoiceButton && mEnableVoice);
         initSuggest(mLanguageSwitcher.getInputLanguage());
         mLanguageSwitcher.persist();
+        if (!reset) syncSystemSubtype();
         mAutoCapActive = mAutoCapPref && mLanguageSwitcher.allowAutoCap();
         mDeadKeysActive = mLanguageSwitcher.allowDeadKeys();
         updateShiftKeyState(getCurrentInputEditorInfo());
