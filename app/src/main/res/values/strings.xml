@@ -709,4 +709,35 @@
     <string name="notification_channel_name">Hacker\'s Keyboard</string>
     <string name="notification_channel_description">Hacker\'s Keyboard</string>
     <string name="notification_action_settings">Settings</string>
+
+    <!-- Spoken key names for screen readers such as TalkBack. -->
+    <string name="spoken_shift">Shift</string>
+    <string name="spoken_delete">Delete</string>
+    <string name="spoken_symbols">Symbols</string>
+    <string name="spoken_settings">Settings</string>
+    <string name="spoken_voice">Voice input</string>
+    <string name="spoken_up">Up arrow</string>
+    <string name="spoken_down">Down arrow</string>
+    <string name="spoken_left">Left arrow</string>
+    <string name="spoken_right">Right arrow</string>
+    <string name="spoken_center">Center</string>
+    <string name="spoken_escape">Escape</string>
+    <string name="spoken_forward_delete">Forward delete</string>
+    <string name="spoken_ctrl">Control</string>
+    <string name="spoken_alt">Alt</string>
+    <string name="spoken_meta">Meta</string>
+    <string name="spoken_fn">Function</string>
+    <string name="spoken_page_up">Page up</string>
+    <string name="spoken_page_down">Page down</string>
+    <string name="spoken_home">Home</string>
+    <string name="spoken_end">End</string>
+    <string name="spoken_insert">Insert</string>
+    <string name="spoken_enter">Enter</string>
+    <string name="spoken_space">Space</string>
+    <string name="spoken_tab">Tab</string>
+    <string name="spoken_unknown_key">Unlabeled key</string>
+    <!-- %s is a key name, e.g. "Shift" -->
+    <string name="spoken_key_on">%s, on</string>
+    <!-- %s is a key name, e.g. "Shift" -->
+    <string name="spoken_key_locked">%s, locked</string>
 </resources>

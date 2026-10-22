@@ -54,6 +54,8 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import androidx.core.view.ViewCompat;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.Normalizer;
@@ -200,6 +202,7 @@ public class LatinKeyboardBaseView extends View implements PointerTracker.UIProx
     // Main keyboard
     private Keyboard mKeyboard;
     private Key[] mKeys;
+    private KeyboardAccessibilityHelper mAccessibilityHelper;
     // TODO this attribute should be gotten from Keyboard.
     private int mKeyboardVerticalGap;
 
@@ -538,6 +541,9 @@ public class LatinKeyboardBaseView extends View implements PointerTracker.UIProx
 
         final Resources res = getResources();
 
+        mAccessibilityHelper = new KeyboardAccessibilityHelper(this);
+        ViewCompat.setAccessibilityDelegate(this, mAccessibilityHelper);
+
         mShowPreview = false;
         mDelayBeforePreview = res.getInteger(R.integer.config_delay_before_preview);
         mDelayBeforeSpacePreview = res.getInteger(R.integer.config_delay_before_space_preview);
@@ -633,6 +639,32 @@ public class LatinKeyboardBaseView extends View implements PointerTracker.UIProx
      * Returns the {@link OnKeyboardActionListener} object.
      * @return the listener attached to this keyboard
      */
+    /* package */ Key[] getKeysForAccessibility() {
+        return mKeys;
+    }
+
+    /** Types a key on behalf of an accessibility service (double-tap or lift to type). */
+    /* package */ void sendKeyForAccessibility(Key key) {
+        OnKeyboardActionListener listener = getOnKeyboardActionListener();
+        if (listener == null || key.codes == null || key.codes.length == 0) return;
+        int code = key.codes[0];
+        listener.onPress(code);
+        if (key.text != null) {
+            listener.onText(key.text);
+        } else {
+            listener.onKey(code, key.codes, key.x + key.width / 2, key.y + key.height / 2);
+        }
+        listener.onRelease(code);
+    }
+
+    @Override
+    public boolean dispatchHoverEvent(MotionEvent event) {
+        if (mAccessibilityHelper != null && mAccessibilityHelper.onHoverEvent(event)) {
+            return true;
+        }
+        return super.dispatchHoverEvent(event);
+    }
+
     protected OnKeyboardActionListener getOnKeyboardActionListener() {
         return mKeyboardActionListener;
     }
@@ -656,6 +688,7 @@ public class LatinKeyboardBaseView extends View implements PointerTracker.UIProx
         // Disable correctionX and correctionY, it doesn't seem to work as intended.
         // mKeys = mKeyDetector.setKeyboard(keyboard, -getPaddingLeft(),-getPaddingTop() + mVerticalCorrection);
         mKeys = mKeyDetector.setKeyboard(keyboard, 0, 0);
+        if (mAccessibilityHelper != null) mAccessibilityHelper.invalidateRoot();
         mKeyboardVerticalGap = (int)getResources().getDimension(R.dimen.key_bottom_gap);
         for (PointerTracker tracker : mPointerTrackers) {
             tracker.setKeyboard(mKeys, mKeyHysteresisDistance);
@@ -702,6 +735,7 @@ public class LatinKeyboardBaseView extends View implements PointerTracker.UIProx
             if (mKeyboard.setShiftState(shiftState)) {
                 // The whole keyboard probably needs to be redrawn
                 invalidateAllKeys();
+                if (mAccessibilityHelper != null) mAccessibilityHelper.invalidateRoot();
                 return true;
             }
         }
