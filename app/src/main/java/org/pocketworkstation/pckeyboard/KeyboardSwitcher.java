@@ -23,6 +23,9 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.InflateException;
 
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
 import java.lang.ref.SoftReference;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -646,6 +649,15 @@ public class KeyboardSwitcher implements
             mInputView.setExtensionLayoutResId(THEMES[newLayout]);
             mInputView.setOnKeyboardActionListener(mInputMethodService);
             mInputView.setPadding(0, 0, 0, 0);
+            // If the keyboard window extends behind the navigation bar (edge-to-edge),
+            // keep the keys above it. The padding is drawn in the keyboard background.
+            ViewCompat.setOnApplyWindowInsetsListener(mInputView, (v, insets) -> {
+                int bottom = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom;
+                if (v.getPaddingBottom() != bottom) {
+                    v.setPadding(0, 0, 0, bottom);
+                }
+                return insets;
+            });
             mLayoutId = newLayout;
         }
         mInputMethodService.mHandler.post(new Runnable() {

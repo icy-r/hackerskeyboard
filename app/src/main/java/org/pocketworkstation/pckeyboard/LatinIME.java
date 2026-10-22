@@ -48,6 +48,8 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.ColorUtils;
+import androidx.core.view.WindowCompat;
 import androidx.core.app.NotificationManagerCompat;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -754,6 +756,30 @@ public class LatinIME extends InputMethodService implements
         return mCandidateViewContainer;
     }
 
+    private Integer mDefaultNavigationBarColor;
+
+    /**
+     * Color the navigation bar below the keyboard to match the Material You theme
+     * (Android 8-14; on Android 15+ the keyboard draws behind the bar itself).
+     */
+    private void applyNavigationBarTheme() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O
+                || Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) return;
+        Window window = getWindow() == null ? null : getWindow().getWindow();
+        if (window == null) return;
+        if (mDefaultNavigationBarColor == null) {
+            mDefaultNavigationBarColor = window.getNavigationBarColor();
+        }
+        boolean materialYou = mKeyboardSwitcher != null && mKeyboardSwitcher.isMaterialYouTheme();
+        int color = materialYou
+                ? ContextCompat.getColor(this, R.color.my_keyboard_background)
+                : mDefaultNavigationBarColor;
+        window.setNavigationBarColor(color);
+        boolean lightBar = materialYou && ColorUtils.calculateLuminance(color) > 0.5;
+        WindowCompat.getInsetsController(window, window.getDecorView())
+                .setAppearanceLightNavigationBars(lightBar);
+    }
+
     /** Make the suggestion strip match the keyboard theme. */
     private void applyCandidateTheme() {
         if (mCandidateViewContainer == null || mCandidateView == null) return;
@@ -800,6 +826,7 @@ public class LatinIME extends InputMethodService implements
         // Retry in case the notification permission was granted after the setting was enabled.
         if (mKeyboardNotification) setNotification(true);
         applyCandidateTheme();
+        applyNavigationBarTheme();
 
         //Log.i("PCKeyboard", "onStartInputView " + attribute + ", inputType= " + Integer.toHexString(attribute.inputType) + ", restarting=" + restarting);
         LatinKeyboardView inputView = mKeyboardSwitcher.getInputView();

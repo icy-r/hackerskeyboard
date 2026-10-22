@@ -38,6 +38,7 @@ import android.graphics.drawable.StateListDrawable;
 
 import org.pocketworkstation.pckeyboard.Keyboard.Key;
 
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
@@ -1228,15 +1229,15 @@ public class LatinKeyboardBaseView extends View implements PointerTracker.UIProx
         int popupPreviewY = key.y - popupHeight + mPreviewOffset;
 
         mHandler.cancelDismissPreview();
-        if (mOffsetInWindow == null) {
-            mOffsetInWindow = new int[2];
-            getLocationInWindow(mOffsetInWindow);
-            mOffsetInWindow[0] += mPopupPreviewOffsetX; // Offset may be zero
-            mOffsetInWindow[1] += mPopupPreviewOffsetY; // Offset may be zero
-            int[] windowLocation = new int[2];
-            getLocationOnScreen(windowLocation);
-            mWindowY = windowLocation[1];
-        }
+        // Recompute every time: the keyboard moves inside the IME window when the
+        // suggestion strip is shown or hidden.
+        if (mOffsetInWindow == null) mOffsetInWindow = new int[2];
+        getLocationInWindow(mOffsetInWindow);
+        mOffsetInWindow[0] += mPopupPreviewOffsetX; // Offset may be zero
+        mOffsetInWindow[1] += mPopupPreviewOffsetY; // Offset may be zero
+        int[] windowLocation = new int[2];
+        getLocationOnScreen(windowLocation);
+        mWindowY = windowLocation[1];
         // Set the preview background state.
         // Retrieve and cache the popup keyboard if any.
         boolean hasPopup = (getLongPressKeyboard(key) != null);
@@ -1245,8 +1246,11 @@ public class LatinKeyboardBaseView extends View implements PointerTracker.UIProx
         popupPreviewX += mOffsetInWindow[0];
         popupPreviewY += mOffsetInWindow[1];
 
-        // If the popup cannot be shown above the key, put it on the side
-        if (popupPreviewY + mWindowY < 0) {
+        // If the popup cannot be shown above the key, put it on the side. Since Android 9
+        // popups are clipped to the keyboard window, so it must fit inside the window;
+        // otherwise it would be pushed down underneath the finger.
+        boolean clippedToWindow = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P;
+        if (clippedToWindow ? popupPreviewY < 0 : popupPreviewY + mWindowY < 0) {
             // If the key you're pressing is on the left side of the keyboard, show the popup on
             // the right, offset by enough to see at least one key to the left/right.
             if (key.x + key.width <= getWidth() / 2) {
@@ -1431,10 +1435,8 @@ public class LatinKeyboardBaseView extends View implements PointerTracker.UIProx
         mMiniKeyboardContainer.measure(MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.AT_MOST),
                 MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.AT_MOST));
 
-        if (mWindowOffset == null) {
-            mWindowOffset = new int[2];
-            getLocationInWindow(mWindowOffset);
-        }
+        if (mWindowOffset == null) mWindowOffset = new int[2];
+        getLocationInWindow(mWindowOffset);
 
         // Get width of a key in the mini popup keyboard = "miniKeyWidth".
         // On the other hand, "popupKey.width" is width of the pressed key on the main keyboard.
@@ -1462,7 +1464,12 @@ public class LatinKeyboardBaseView extends View implements PointerTracker.UIProx
         popupY -= mMiniKeyboardContainer.getMeasuredHeight();
         popupY += mMiniKeyboardContainer.getPaddingBottom();
         final int x = popupX;
-        final int y = mShowPreview && isOneRowKeys(miniKeys) ? mPopupPreviewDisplayedY : popupY;
+        int y = mShowPreview && isOneRowKeys(miniKeys) ? mPopupPreviewDisplayedY : popupY;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && y < 0) {
+            // Keep the popup inside the keyboard window (see showKey) so that the touch
+            // offsets computed below match where it is actually drawn.
+            y = 0;
+        }
 
         int adjustedX = x;
         if (x < 0) {
