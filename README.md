@@ -24,6 +24,15 @@ Keyboard](https://play.google.com/store/apps/details?id=org.pocketworkstation.pc
 from the Play Store, plus optional [dictionary
 packs](https://play.google.com/store/apps/developer?id=Klaus+Weidner).
 
+## Building ##
+
+Requires JDK 17+ and the Android SDK (platform 36, NDK r28; Gradle downloads what it can).
+
+    ./gradlew assembleDebug          # APK in app/build/outputs/apk/debug/
+    ./gradlew testDebugUnitTest      # unit tests; also renders theme screenshots to app/build/screenshots/
+
+See [docs/MODERNIZATION_UI_UX.md](docs/MODERNIZATION_UI_UX.md) for the UI/UX modernization notes.
+
 ## Additional resources ##
 
 See the **[Release Notes](https://github.com/klausw/hackerskeyboard/wiki/ReleaseNotes)** for changes in the Play Store released versions.

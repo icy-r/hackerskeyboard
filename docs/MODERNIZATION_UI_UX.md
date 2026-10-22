@@ -1,6 +1,50 @@
 # Modernizing Hacker's Keyboard for current phones — UI/UX research
 
-Status: research notes (October 2026). Nothing in this document is implemented yet.
+Status: research notes (October 2026), partly implemented. See "Implementation
+status" below.
+
+## Implementation status
+
+Done (v1.42.0):
+
+- **Build:** Gradle 8.14 / AGP 8.13, targetSdk and compileSdk 36, minSdk 21,
+  AndroidX, NDK r28 (16 KB pages), committed Gradle wrapper, GitHub Actions
+  build (`.github/workflows/android.yml`).
+- **Android 12–16 fixes:** immutable PendingIntents, non-exported receivers,
+  no notification trampoline, POST_NOTIFICATIONS request, `<queries>` for
+  dictionary plugins, explicit `android:exported`, hardware acceleration no
+  longer disabled app-wide.
+- **Material You theme** (new default): rounded keys drawn from shapes, colors
+  from the wallpaper on Android 12+, follows system dark mode, distinct
+  colors for functional keys, Enter, and modifier off / on / locked states;
+  the suggestion strip and navigation bar match.
+- **Insets:** keys stay above the navigation bar if the keyboard window is
+  edge-to-edge; settings/setup screens pad for system bars.
+- **Popups:** on Android 9+ the "does the preview fit above the key" check
+  uses window coordinates, so top-row previews move beside the finger;
+  popup window offsets are no longer cached stale.
+- **Languages:** one IME subtype per layout, so layouts appear in the system
+  language list and switcher. Explicitly enabled subtypes stay in sync with
+  the in-keyboard language.
+- **Space bar cursor control**, **clipboard history** in the suggestion
+  strip (swipe right by default; sensitive clips skipped, memory only),
+  **system key-click haptics** on Android 10+.
+- **Accessibility:** keys are exposed to TalkBack with spoken names,
+  double-tap and lift-to-type.
+- **Setup screen** with self-checking steps and a try-it field; settings
+  follow system dark mode.
+- **Tests:** Robolectric tests render each theme and the setup screen to
+  PNG (`app/build/screenshots`), and cover space-bar sliding, clipboard
+  history and accessibility.
+
+Not done yet: toolbar row, emoji panel, one-handed / floating / split modes,
+dp-based height with a resize handle, inline autofill suggestions, new voice
+input, AndroidX preference migration with search and live preview, custom
+layout import/export, settings backup to a file, drawing popups inside an
+enlarged input view (the AOSP approach), and splitting up `LatinIME.java`.
+
+All of the above was verified by building, by unit tests and by rendered
+screenshots, not on a physical device.
 
 The keyboard is a 2011 fork of the Gingerbread AOSP LatinIME. It still has the
 best desktop-style layout on Android (5 rows, Esc/Tab/Ctrl/Alt/arrows/F-keys),
