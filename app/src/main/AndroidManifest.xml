@@ -5,6 +5,16 @@
     <uses-permission android:name="android.permission.WRITE_USER_DICTIONARY" />
     <!-- Only needed for the optional "show keyboard" notification (Android 13+). -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Android 11+ package visibility: find installed dictionary plugin packages. -->
+    <queries>
+        <intent>
+            <action android:name="org.pocketworkstation.DICT" />
+        </intent>
+        <intent>
+            <action android:name="com.menny.android.anysoftkeyboard.DICTIONARY" />
+        </intent>
+    </queries>
+
     <uses-feature android:name="android.hardware.microphone" android:required="false" />
     <uses-feature android:name="android.hardware.faketouch" android:required="false" />
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
@@ -44,7 +54,7 @@
         </activity>
 
         <activity android:name="InputLanguageSelection"
-                android:exported="true"
+                android:exported="false"
                 android:label="@string/language_selection_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -54,7 +64,7 @@
         </activity>
 
         <activity android:name="PrefScreenActions"
-                android:exported="true"
+                android:exported="false"
                 android:label="@string/pref_screen_actions_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -64,7 +74,7 @@
         </activity>
             
         <activity android:name="PrefScreenView"
-                android:exported="true"
+                android:exported="false"
                 android:label="@string/pref_screen_actions_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -74,7 +84,7 @@
         </activity>
 
         <activity android:name="PrefScreenFeedback"
-                android:exported="true"
+                android:exported="false"
                 android:label="@string/pref_screen_feedback_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

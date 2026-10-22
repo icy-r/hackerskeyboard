@@ -49,6 +49,7 @@ import android.os.Vibrator;
 import android.os.VibratorManager;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
@@ -3517,6 +3518,7 @@ public class LatinIME extends InputMethodService implements
         }
     }
     
+    @RequiresApi(Build.VERSION_CODES.O)
     private void vibrate(VibrationEffect effect) {
         Vibrator v;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
