@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Labels for keyboard-layout subtypes that are not plain locales. -->
+<resources>
+    <!-- %s is replaced by the system with the subtype locale's display name. -->
+    <string name="subtype_generic" translatable="false">%s</string>
+    <string name="subtype_bg" translatable="false">български език (Phonetic)</string>
+    <string name="subtype_bg_st" translatable="false">български език (Standard)</string>
+    <string name="subtype_cs_qy" translatable="false">Čeština (QWERTY)</string>
+    <string name="subtype_de_ne" translatable="false">Deutsch (Neo2)</string>
+    <string name="subtype_en_cx" translatable="false">English (Carpalx)</string>
+    <string name="subtype_en_dv" translatable="false">English (Dvorak)</string>
+    <string name="subtype_es_la" translatable="false">Español (Latinoamérica)</string>
+    <string name="subtype_hu_qy" translatable="false">Magyar (QWERTY)</string>
+    <string name="subtype_ru_ph" translatable="false">Русский (Phonetic)</string>
+    <string name="subtype_sk_qy" translatable="false">Slovenčina (QWERTY)</string>
+</resources>

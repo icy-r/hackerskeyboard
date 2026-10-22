@@ -69,6 +69,7 @@ import android.view.inputmethod.ExtractedText;
 import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
+import android.view.inputmethod.InputMethodSubtype;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -2965,6 +2966,37 @@ public class LatinIME extends InputMethodService implements
 
     public boolean preferCapitalization() {
         return mWord.isFirstCharCapitalized();
+    }
+
+    /**
+     * The user picked one of our subtypes from the system language list or switcher:
+     * switch to that keyboard layout, adding it to the enabled languages if needed.
+     */
+    @Override
+    public void onCurrentInputMethodSubtypeChanged(InputMethodSubtype subtype) {
+        super.onCurrentInputMethodSubtypeChanged(subtype);
+        String lang = subtype == null ? null : subtype.getExtraValueOf("hk_lang");
+        if (TextUtils.isEmpty(lang) || mLanguageSwitcher == null) return;
+        if (lang.equals(mLanguageSwitcher.getInputLanguage())) return;
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String selected = prefs.getString(PREF_SELECTED_LANGUAGES, "");
+        if (TextUtils.isEmpty(selected)) {
+            // Keep the language that was implicitly in use so it stays in the cycle.
+            selected = mLanguageSwitcher.getInputLanguage();
+        }
+        boolean present = false;
+        for (String s : TextUtils.split(selected, ",")) {
+            if (s.equals(lang)) present = true;
+        }
+        if (!present) {
+            selected = TextUtils.isEmpty(selected) ? lang : selected + "," + lang;
+        }
+        prefs.edit()
+                .putString(PREF_SELECTED_LANGUAGES, selected)
+                .putString(PREF_INPUT_LANGUAGE, lang)
+                .commit();
+        toggleLanguage(true, true);
     }
 
     void toggleLanguage(boolean reset, boolean next) {

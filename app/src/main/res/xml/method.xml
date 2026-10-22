@@ -20,7 +20,352 @@
 <!-- The attributes in this XML file provide configuration information -->
 <!-- for the Input Method Manager. -->
 
+<!-- One subtype per keyboard layout, so that the layouts show up in the system
+     language settings and in the system keyboard switcher. LatinIME maps the
+     hk_lang extra value back to its own input language. -->
 <input-method xmlns:android="http://schemas.android.com/apk/res/android"
         android:settingsActivity="org.pocketworkstation.pckeyboard.LatinIMESettings"
-        android:isDefault="@bool/im_is_default"
-/>
+        android:isDefault="@bool/im_is_default">
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328237"
+            android:imeSubtypeLocale="ar"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=ar" />
+    <subtype
+            android:label="@string/subtype_bg"
+            android:subtypeId="99328257"
+            android:imeSubtypeLocale="bg"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=bg" />
+    <subtype
+            android:label="@string/subtype_bg_st"
+            android:subtypeId="-144268705"
+            android:imeSubtypeLocale="bg_ST"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=bg_ST" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328282"
+            android:imeSubtypeLocale="ca"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=ca" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328300"
+            android:imeSubtypeLocale="cs"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=cs" />
+    <subtype
+            android:label="@string/subtype_cs_qy"
+            android:subtypeId="-142987749"
+            android:imeSubtypeLocale="cs_QY"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=cs_QY" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328313"
+            android:imeSubtypeLocale="da"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=da" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328317"
+            android:imeSubtypeLocale="de"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=de" />
+    <subtype
+            android:label="@string/subtype_de_ne"
+            android:subtypeId="-142481415"
+            android:imeSubtypeLocale="de_NE"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=de_NE" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328355"
+            android:imeSubtypeLocale="el"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=el" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328357"
+            android:imeSubtypeLocale="en"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=en" />
+    <subtype
+            android:label="@string/subtype_en_cx"
+            android:subtypeId="-141290097"
+            android:imeSubtypeLocale="en_CX"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=en_CX" />
+    <subtype
+            android:label="@string/subtype_en_dv"
+            android:subtypeId="-141290068"
+            android:imeSubtypeLocale="en_DV"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=en_DV" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="-141289995"
+            android:imeSubtypeLocale="en_GB"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=en_GB" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328362"
+            android:imeSubtypeLocale="es"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=es" />
+    <subtype
+            android:label="@string/subtype_es_la"
+            android:subtypeId="-141140886"
+            android:imeSubtypeLocale="es_LA"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=es_LA" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="-141140589"
+            android:imeSubtypeLocale="es_US"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=es_US" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328375"
+            android:imeSubtypeLocale="fa"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=fa" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328383"
+            android:imeSubtypeLocale="fi"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=fi" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328392"
+            android:imeSubtypeLocale="fr"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=fr" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="-140247435"
+            android:imeSubtypeLocale="fr_CA"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=fr_CA" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328441"
+            android:imeSubtypeLocale="he"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=he" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328454"
+            android:imeSubtypeLocale="hr"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=hr" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328457"
+            android:imeSubtypeLocale="hu"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=hu" />
+    <subtype
+            android:label="@string/subtype_hu_qy"
+            android:subtypeId="-138310562"
+            android:imeSubtypeLocale="hu_QY"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=hu_QY" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328461"
+            android:imeSubtypeLocale="hy"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=hy" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328481"
+            android:imeSubtypeLocale="in"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=in" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328487"
+            android:imeSubtypeLocale="it"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=it" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328499"
+            android:imeSubtypeLocale="ja"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=ja" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328530"
+            android:imeSubtypeLocale="ka"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=ka" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328544"
+            android:imeSubtypeLocale="ko"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=ko" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328575"
+            android:imeSubtypeLocale="lo"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=lo" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328580"
+            android:imeSubtypeLocale="lt"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=lt" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328582"
+            android:imeSubtypeLocale="lv"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=lv" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328624"
+            android:imeSubtypeLocale="nb"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=nb" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328634"
+            android:imeSubtypeLocale="nl"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=nl" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328696"
+            android:imeSubtypeLocale="pl"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=pl" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328704"
+            android:imeSubtypeLocale="pt"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=pt" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="-130952221"
+            android:imeSubtypeLocale="pt_PT"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=pt_PT" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328759"
+            android:imeSubtypeLocale="rm"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=rm" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328761"
+            android:imeSubtypeLocale="ro"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=ro" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328767"
+            android:imeSubtypeLocale="ru"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=ru" />
+    <subtype
+            android:label="@string/subtype_ru_ph"
+            android:subtypeId="-129075400"
+            android:imeSubtypeLocale="ru_PH"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=ru_PH" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328786"
+            android:imeSubtypeLocale="si"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=si" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328788"
+            android:imeSubtypeLocale="sk"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=sk" />
+    <subtype
+            android:label="@string/subtype_sk_qy"
+            android:subtypeId="-128449741"
+            android:imeSubtypeLocale="sk_QY"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=sk_QY" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328789"
+            android:imeSubtypeLocale="sl"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=sl" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328795"
+            android:imeSubtypeLocale="sr"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=sr" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328799"
+            android:imeSubtypeLocale="sv"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=sv" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328809"
+            android:imeSubtypeLocale="ta"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=ta" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328816"
+            android:imeSubtypeLocale="th"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=th" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328820"
+            android:imeSubtypeLocale="tl"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=tl" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328826"
+            android:imeSubtypeLocale="tr"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=tr" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328850"
+            android:imeSubtypeLocale="uk"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=uk" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="99328879"
+            android:imeSubtypeLocale="vi"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=vi" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="-122074912"
+            android:imeSubtypeLocale="zh_CN"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=zh_CN" />
+    <subtype
+            android:label="@string/subtype_generic"
+            android:subtypeId="-122074376"
+            android:imeSubtypeLocale="zh_TW"
+            android:imeSubtypeMode="keyboard"
+            android:imeSubtypeExtraValue="hk_lang=zh_TW" />
+</input-method>
