@@ -843,9 +843,17 @@ public class LatinKeyboardBaseView extends View implements PointerTracker.UIProx
                     getPaddingLeft() + getPaddingRight(), getPaddingTop() + getPaddingBottom());
         } else {
             int width = mKeyboard.getMinWidth() + getPaddingLeft() + getPaddingRight();
-            if (MeasureSpec.getSize(widthMeasureSpec) < width + 10) {
-                int badWidth = MeasureSpec.getSize(widthMeasureSpec);
-                if (badWidth != width) Log.i(TAG, "ignoring unexpected width=" + badWidth);
+            int specWidth = MeasureSpec.getSize(widthMeasureSpec);
+            if (MeasureSpec.getMode(widthMeasureSpec) != MeasureSpec.UNSPECIFIED
+                    && specWidth > 0 && specWidth < width) {
+                // The window is narrower than the display the keys were laid out for,
+                // e.g. with a side navigation bar in landscape (since Android 15 the
+                // display metrics include the system bars). Shrink the keys to fit.
+                Log.i(TAG, "fitting keyboard width " + width + " into " + specWidth);
+                mKeyboard.setKeyboardWidth(specWidth - getPaddingLeft() - getPaddingRight());
+                width = mKeyboard.getMinWidth() + getPaddingLeft() + getPaddingRight();
+                computeProximityThreshold(mKeyboard);
+                mKeyboardChanged = true;
             }
             Log.i(TAG, "onMeasure width=" + width);
             setMeasuredDimension(

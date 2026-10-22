@@ -1290,6 +1290,7 @@ public class Keyboard {
         Log.i("PCKeyboard", "Rescaling keyboard: " + mTotalWidth + " => " + newWidth);
         for (Key key : mKeys) {
             key.x = Math.round(key.realX * scale);
+            key.width = Math.round(key.realWidth * scale);
         }
         mTotalWidth = newWidth;
     }
