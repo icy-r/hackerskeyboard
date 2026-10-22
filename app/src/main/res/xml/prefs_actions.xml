@@ -52,6 +52,14 @@
             android:key="pref_swipe_right"
             android:persistent="true"
             android:title="@string/title_swipe_right" />
+
+        <org.pocketworkstation.pckeyboard.AutoSummaryListPreference
+            android:defaultValue="0"
+            android:entries="@array/space_swipe_entries"
+            android:entryValues="@array/space_swipe_values"
+            android:key="pref_space_swipe"
+            android:persistent="true"
+            android:title="@string/title_space_swipe" />
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -43,7 +43,10 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.SystemClock;
+import android.os.VibrationAttributes;
+import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.os.VibratorManager;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import androidx.core.app.NotificationCompat;
@@ -407,6 +410,7 @@ public class LatinIME extends InputMethodService implements
         sKeyboardSettings.initPrefs(prefs, res);
 
         mVoiceRecognitionTrigger = new VoiceRecognitionTrigger(this);
+        mClipboardHistory = new ClipboardHistory(this);
         
         updateKeyboardOptions();
 
@@ -670,6 +674,7 @@ public class LatinIME extends InputMethodService implements
         //if (mContactsDictionary != null) {
         //    mContactsDictionary.close();
         //}
+        if (mClipboardHistory != null) mClipboardHistory.destroy();
         unregisterReceiver(mReceiver);
         unregisterReceiver(mPluginManager);
         if (mNotificationReceiver != null) {
@@ -758,6 +763,9 @@ public class LatinIME extends InputMethodService implements
     }
 
     private Integer mDefaultNavigationBarColor;
+    private ClipboardHistory mClipboardHistory;
+    private boolean mShowingClipboard;
+    private List<String> mClipboardItems;
 
     /**
      * Color the navigation bar below the keyboard to match the Material You theme
@@ -1012,6 +1020,7 @@ public class LatinIME extends InputMethodService implements
     @Override
     public void onFinishInput() {
         super.onFinishInput();
+        hideClipboardHistory();
 
         onAutoCompletionStateChanged(false);
 
@@ -1189,7 +1198,7 @@ public class LatinIME extends InputMethodService implements
         boolean visible = shown
         && onEvaluateInputViewShown()
         && mKeyboardSwitcher.getInputView() != null
-        && isPredictionOn()
+        && (isPredictionOn() || mShowingClipboard)
         && (needsInputViewShown
                 ? mKeyboardSwitcher.getInputView().isShown()
                         : true);
@@ -1502,6 +1511,7 @@ public class LatinIME extends InputMethodService implements
     }
 
     public boolean addWordToDictionary(String word) {
+        if (mShowingClipboard) return false;
         mUserDictionary.addWord(word, 128);
         // Suggestion strip should be updated after the operation of adding word
         // to the
@@ -1999,6 +2009,10 @@ public class LatinIME extends InputMethodService implements
     // Implementation of KeyboardViewListener
 
     public void onKey(int primaryCode, int[] keyCodes, int x, int y) {
+        if (mShowingClipboard && primaryCode != LatinKeyboardView.KEYCODE_DPAD_LEFT
+                && primaryCode != LatinKeyboardView.KEYCODE_DPAD_RIGHT) {
+            hideClipboardHistory();
+        }
         long when = SystemClock.uptimeMillis();
         if (primaryCode != Keyboard.KEYCODE_DELETE
                 || when > mLastKeyTime + QUICK_PRESS) {
@@ -2661,7 +2675,43 @@ public class LatinIME extends InputMethodService implements
         return false;
     }
 
+    /** Show recently copied text in the suggestion strip; tapping an entry pastes it. */
+    private void showClipboardHistory() {
+        mClipboardItems = mClipboardHistory == null
+                ? new ArrayList<String>() : mClipboardHistory.getItems();
+        if (mClipboardItems.isEmpty()) {
+            Toast.makeText(getApplicationContext(), R.string.clipboard_empty,
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        commitTyped(getCurrentInputConnection(), true);
+        mShowingClipboard = true;
+        setCandidatesViewShownInternal(true, false);
+        List<CharSequence> labels = new ArrayList<CharSequence>();
+        for (String item : mClipboardItems) labels.add(ClipboardHistory.label(item));
+        if (mCandidateView != null) {
+            mCandidateView.setSuggestions(labels, true, false, false);
+        }
+    }
+
+    private void hideClipboardHistory() {
+        if (!mShowingClipboard) return;
+        mShowingClipboard = false;
+        mClipboardItems = null;
+        clearSuggestions();
+        setCandidatesViewShown(isPredictionOn());
+    }
+
     public void pickSuggestionManually(int index, CharSequence suggestion) {
+        if (mShowingClipboard) {
+            List<String> items = mClipboardItems;
+            InputConnection ic = getCurrentInputConnection();
+            if (ic != null && items != null && index >= 0 && index < items.size()) {
+                ic.commitText(items.get(index), 1);
+            }
+            hideClipboardHistory();
+            return;
+        }
         List<CharSequence> suggestions = mCandidateView.getSuggestions();
 
         final boolean correcting = TextEntryState.isCorrecting();
@@ -3160,6 +3210,8 @@ public class LatinIME extends InputMethodService implements
                 mSuggestionForceOn = true;
             }
             setCandidatesViewShown(isPredictionOn());
+        } else if (action.equals("clipboard")) {
+            showClipboardHistory();
         } else if (action.equals("lang_prev")) {
             toggleLanguage(false, false);
         } else if (action.equals("lang_next")) {
@@ -3400,10 +3452,21 @@ public class LatinIME extends InputMethodService implements
         if (!mVibrateOn) {
             return;
         }
+        if (sKeyboardSettings.vibrateStyle == GlobalKeyboardSettings.VIBRATE_STYLE_SYSTEM
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // The device's tuned key-click effect: crisper than a fixed-length buzz on
+            // modern haptic motors.
+            vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK));
+            return;
+        }
         vibrate(mVibrateLen);
     }
 
     void vibrate(int len) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrate(VibrationEffect.createOneShot(len, VibrationEffect.DEFAULT_AMPLITUDE));
+            return;
+        }
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         if (v != null) {
             v.vibrate(len);
@@ -3417,6 +3480,22 @@ public class LatinIME extends InputMethodService implements
         }
     }
     
+    private void vibrate(VibrationEffect effect) {
+        Vibrator v;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            VibratorManager vm = (VibratorManager) getSystemService(Context.VIBRATOR_MANAGER_SERVICE);
+            v = vm == null ? null : vm.getDefaultVibrator();
+        } else {
+            v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        }
+        if (v == null || !v.hasVibrator()) return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            v.vibrate(effect, VibrationAttributes.createForUsage(VibrationAttributes.USAGE_TOUCH));
+        } else {
+            v.vibrate(effect);
+        }
+    }
+
     /* package */void promoteToUserDictionary(String word, int frequency) {
         if (mUserDictionary.isValidWord(word))
             return;

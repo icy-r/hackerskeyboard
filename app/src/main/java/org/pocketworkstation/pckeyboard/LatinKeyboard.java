@@ -574,8 +574,23 @@ public class LatinKeyboard extends Keyboard {
         mSpaceKey.iconPreview.invalidateSelf();
     }
 
+    /** Whether sliding on the space bar switches the input language. */
+    private boolean isLanguageSlideEnabled() {
+        int mode = LatinIME.sKeyboardSettings.spaceSwipeMode;
+        return mLanguageSwitcher != null && mLanguageSwitcher.getLocaleCount() > 1
+                && (mode == GlobalKeyboardSettings.SPACE_SWIPE_AUTO
+                    || mode == GlobalKeyboardSettings.SPACE_SWIPE_LANGUAGE);
+    }
+
+    /** Whether sliding on the space bar moves the text cursor. */
+    boolean isSpaceCursorEnabled() {
+        int mode = LatinIME.sKeyboardSettings.spaceSwipeMode;
+        return mode == GlobalKeyboardSettings.SPACE_SWIPE_CURSOR
+                || (mode == GlobalKeyboardSettings.SPACE_SWIPE_AUTO && !isLanguageSlideEnabled());
+    }
+
     public int getLanguageChangeDirection() {
-        if (mSpaceKey == null || mLanguageSwitcher.getLocaleCount() < 2
+        if (mSpaceKey == null || !isLanguageSlideEnabled()
                 || Math.abs(mSpaceDragLastDiff) < getSpacePreviewWidth() * SPACEBAR_DRAG_THRESHOLD) {
             return 0; // No change
         }
@@ -639,7 +654,7 @@ public class LatinKeyboard extends Keyboard {
             if (code == KEYCODE_DELETE) x -= key.width / 6;
         } else if (code == LatinIME.ASCII_SPACE) {
             y += LatinKeyboard.sSpacebarVerticalCorrection;
-            if (mLanguageSwitcher.getLocaleCount() > 1) {
+            if (isLanguageSlideEnabled()) {
                 if (mCurrentlyInSpace) {
                     int diff = x - mSpaceDragStartX;
                     if (Math.abs(diff - mSpaceDragLastDiff) > 0) {

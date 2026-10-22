@@ -584,7 +584,8 @@
         <item>Increase height</item>
         <item>Decrease height</item>
         <item>Previous language</item>
--       <item>Next language</item>
+        <item>Next language</item>
+        <item>Clipboard history</item>
         </string-array>
     <string-array name="swipe_action_values">
         <item>none</item>
@@ -597,12 +598,39 @@
         <item>height_up</item>
         <item>height_down</item>
         <item>lang_prev</item>
--       <item>lang_next</item>
+        <item>lang_next</item>
+        <item>clipboard</item>
     </string-array>    
     <string name="default_swipe_up">extension</string>
     <string name="default_swipe_down">close</string>
     <string name="default_swipe_left">none</string>
-    <string name="default_swipe_right">none</string>
+    <string name="default_swipe_right">clipboard</string>
+
+    <string name="clipboard_empty">Nothing copied yet</string>
+
+    <string name="title_space_swipe">Slide on space bar</string>
+    <string-array name="space_swipe_entries">
+        <item>Move cursor (switch language if several are enabled)</item>
+        <item>Always move cursor</item>
+        <item>Switch language</item>
+        <item>Do nothing</item>
+    </string-array>
+    <string-array name="space_swipe_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="title_vibrate_style">Vibration style</string>
+    <string-array name="vibrate_style_entries">
+        <item>System key click (recommended)</item>
+        <item>Custom duration</item>
+    </string-array>
+    <string-array name="vibrate_style_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
     <string name="default_vol_up">none</string>
     <string name="default_vol_down">none</string>
         

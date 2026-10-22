@@ -32,6 +32,7 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.widget.PopupWindow;
@@ -110,6 +111,13 @@ public class LatinKeyboardView extends LatinKeyboardBaseView {
      * extension keyboard.
      */
     private boolean mDisableDisambiguation;
+
+    // Space bar cursor control: slide a finger along the space bar to move the cursor.
+    private boolean mSpaceCursorTracking;
+    private boolean mSpaceCursorActive;
+    private int mSpaceCursorPointerId;
+    private float mSpaceCursorStartX;
+    private float mSpaceCursorLastX;
     /** The distance threshold at which we start treating the touch session as a multi-touch */
     private int mJumpThresholdSquare = Integer.MAX_VALUE;
     /** The y coordinate of the last row */
@@ -325,9 +333,81 @@ public class LatinKeyboardView extends LatinKeyboardBaseView {
         return result;
     }
 
+    private Key findSpaceKeyAt(LatinKeyboard keyboard, int x, int y) {
+        for (Key key : keyboard.getKeys()) {
+            if (key.codes != null && key.codes.length > 0 && key.codes[0] == LatinIME.ASCII_SPACE
+                    && x >= key.x && x < key.x + key.width
+                    && y >= key.y && y < key.y + key.height) {
+                return key;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Handles sliding along the space bar to move the cursor. Returns true if the event
+     * was consumed. Once the slide passes a small threshold the space key press is
+     * cancelled, and each further step sends a left/right arrow key.
+     */
+    private boolean handleSpaceCursor(MotionEvent me, LatinKeyboard keyboard) {
+        final int action = me.getActionMasked();
+        if (action == MotionEvent.ACTION_DOWN) {
+            mSpaceCursorTracking = false;
+            mSpaceCursorActive = false;
+            if (keyboard != null && !mIsExtensionType && keyboard.isSpaceCursorEnabled()
+                    && findSpaceKeyAt(keyboard, (int) me.getX() - getPaddingLeft(),
+                            (int) me.getY() - getPaddingTop()) != null) {
+                mSpaceCursorTracking = true;
+                mSpaceCursorPointerId = me.getPointerId(0);
+                mSpaceCursorStartX = mSpaceCursorLastX = me.getX();
+            }
+            return false;
+        }
+        if (!mSpaceCursorTracking) return false;
+
+        final int index = me.findPointerIndex(mSpaceCursorPointerId);
+        final boolean ourPointerUp = action == MotionEvent.ACTION_POINTER_UP
+                && me.getPointerId(me.getActionIndex()) == mSpaceCursorPointerId;
+        if (index < 0 || action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL
+                || ourPointerUp) {
+            boolean consumed = mSpaceCursorActive;
+            mSpaceCursorTracking = false;
+            mSpaceCursorActive = false;
+            return consumed;
+        }
+        if (action != MotionEvent.ACTION_MOVE) return mSpaceCursorActive;
+
+        final float density = getResources().getDisplayMetrics().density;
+        final float x = me.getX(index);
+        if (!mSpaceCursorActive) {
+            if (Math.abs(x - mSpaceCursorStartX) < 16 * density) return false;
+            // Turn the space press into a cursor slide: cancel the key press.
+            mSpaceCursorActive = true;
+            mSpaceCursorLastX = x;
+            MotionEvent cancel = MotionEvent.obtain(me);
+            cancel.setAction(MotionEvent.ACTION_CANCEL);
+            super.onTouchEvent(cancel);
+            cancel.recycle();
+            keyboard.keyReleased();
+            return true;
+        }
+        final float step = 12 * density;
+        int steps = (int) ((x - mSpaceCursorLastX) / step);
+        if (steps != 0) {
+            mSpaceCursorLastX += steps * step;
+            int code = steps > 0 ? KEYCODE_DPAD_RIGHT : KEYCODE_DPAD_LEFT;
+            for (int i = Math.abs(steps); i > 0; --i) {
+                getOnKeyboardActionListener().onKey(code, null, 0, 0);
+            }
+            performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK);
+        }
+        return true;
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent me) {
         LatinKeyboard keyboard = (LatinKeyboard) getKeyboard();
+        if (handleSpaceCursor(me, keyboard)) return true;
         if (LatinIME.sKeyboardSettings.showTouchPos || DEBUG_LINE) {
             mLastX = (int) me.getX();
             mLastY = (int) me.getY();

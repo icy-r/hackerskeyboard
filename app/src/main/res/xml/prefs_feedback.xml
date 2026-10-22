@@ -25,6 +25,16 @@
             android:persistent="true"
             />
 
+    <org.pocketworkstation.pckeyboard.AutoSummaryListPreference
+            android:key="pref_vibrate_style"
+            android:title="@string/title_vibrate_style"
+            android:entryValues="@array/vibrate_style_values"
+            android:entries="@array/vibrate_style_entries"
+            android:defaultValue="0"
+            android:dependency="vibrate_on"
+            android:persistent="true"
+            />
+
     <org.pocketworkstation.pckeyboard.VibratePreference		
             android:defaultValue="40"
             hk:minValue="5"

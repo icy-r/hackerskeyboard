@@ -79,6 +79,18 @@ public final class GlobalKeyboardSettings {
     // Read by PointerTracker
     public int longpressTimeout = 400;
     //
+    // Read by LatinKeyboard and LatinKeyboardView
+    public static final int SPACE_SWIPE_AUTO = 0;
+    public static final int SPACE_SWIPE_CURSOR = 1;
+    public static final int SPACE_SWIPE_LANGUAGE = 2;
+    public static final int SPACE_SWIPE_OFF = 3;
+    public int spaceSwipeMode = SPACE_SWIPE_AUTO;
+    //
+    // Read by LatinIME
+    public static final int VIBRATE_STYLE_SYSTEM = 0;
+    public static final int VIBRATE_STYLE_CUSTOM = 1;
+    public int vibrateStyle = VIBRATE_STYLE_SYSTEM;
+    //
     // Read by LatinIMESettings
     // These are cached values for informational display, don't use for other purposes
     public String editorPackageName; 
@@ -208,6 +220,18 @@ public final class GlobalKeyboardSettings {
         addStringPref("pref_click_method", new StringPref() {
             public void set(String val) { keyClickMethod = Integer.valueOf(val); }
             public String getDefault() { return res.getString(R.string.default_click_method); }
+            public int getFlags() { return FLAG_PREF_NONE; }
+        });
+
+        addStringPref("pref_space_swipe", new StringPref() {
+            public void set(String val) { spaceSwipeMode = Integer.valueOf(val); }
+            public String getDefault() { return "0"; }
+            public int getFlags() { return FLAG_PREF_NONE; }
+        });
+
+        addStringPref("pref_vibrate_style", new StringPref() {
+            public void set(String val) { vibrateStyle = Integer.valueOf(val); }
+            public String getDefault() { return "0"; }
             public int getFlags() { return FLAG_PREF_NONE; }
         });
 
