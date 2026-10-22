@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="my_keyboard_background">#FF1B1C1E</color>
+    <color name="my_key">#FF3A3B3E</color>
+    <color name="my_key_pressed">#FF55575B</color>
+    <color name="my_key_functional">#FF2A2E35</color>
+    <color name="my_key_functional_pressed">#FF454A52</color>
+    <color name="my_key_modifier_on">#FF2F4A73</color>
+    <color name="my_key_modifier_locked">#FF3F6AAE</color>
+    <color name="my_key_action">#FF0842A0</color>
+    <color name="my_key_action_pressed">#FF1A5BC4</color>
+    <color name="my_key_text">#FFE3E3E3</color>
+    <color name="my_key_hint">#FF9AA0A6</color>
+    <color name="my_suggestion_text">#FFE3E3E3</color>
+    <color name="my_suggestion_recommended">#FFA8C7FA</color>
+    <color name="my_suggestion_other">#FF9AA0A6</color>
+</resources>

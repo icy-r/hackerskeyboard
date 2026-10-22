@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Material You theme: rounded keys colored from the system palette (Android 12+),
+     following the system light/dark setting. -->
+<org.pocketworkstation.pckeyboard.LatinKeyboardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:latin="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/LatinkeyboardBaseView"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="3dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:paddingBottom="@dimen/keyboard_bottom_padding"
+        android:background="@color/my_keyboard_background"
+        latin:recolorSymbols="true"
+        latin:shadowRadius="0"
+        latin:shadowColor="#00000000"
+        latin:keyTextColor="@color/my_key_text"
+        latin:keyHintColor="@color/my_key_hint"
+        latin:keyCursorColor="@color/my_key_text"
+        latin:keyBackground="@drawable/btn_keyboard_key_material_you"
+        latin:popupLayout="@layout/input_popup_material_you"
+        />

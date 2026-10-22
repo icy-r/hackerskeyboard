@@ -789,12 +789,26 @@ public class LatinKeyboard extends Keyboard {
 
         // functional normal state (with properties)
         private final int[] KEY_STATE_FUNCTIONAL_NORMAL = {
-                android.R.attr.state_single
+                android.R.attr.state_single,
+                R.attr.state_functional
         };
 
         // functional pressed state (with properties)
         private final int[] KEY_STATE_FUNCTIONAL_PRESSED = {
                 android.R.attr.state_single,
+                R.attr.state_functional,
+                android.R.attr.state_pressed
+        };
+
+        // Enter / editor action key
+        private final int[] KEY_STATE_ACTION_NORMAL = {
+                android.R.attr.state_single,
+                R.attr.state_action
+        };
+
+        private final int[] KEY_STATE_ACTION_PRESSED = {
+                android.R.attr.state_single,
+                R.attr.state_action,
                 android.R.attr.state_pressed
         };
 
@@ -807,6 +821,10 @@ public class LatinKeyboard extends Keyboard {
         // the key will be treated as functional.
         private boolean isFunctionalKey() {
             return !sticky && modifier;
+        }
+
+        private boolean isSpaceKey() {
+            return codes != null && codes.length > 0 && codes[0] == ' ';
         }
 
         /**
@@ -826,7 +844,10 @@ public class LatinKeyboard extends Keyboard {
 
         @Override
         public int[] getCurrentDrawableState() {
-            if (isFunctionalKey()) {
+            if (isFunctionalKey() && !isSpaceKey()) {
+                if (isActionKey()) {
+                    return pressed ? KEY_STATE_ACTION_PRESSED : KEY_STATE_ACTION_NORMAL;
+                }
                 if (pressed) {
                     return KEY_STATE_FUNCTIONAL_PRESSED;
                 } else {

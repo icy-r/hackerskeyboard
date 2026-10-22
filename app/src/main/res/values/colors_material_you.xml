@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- "Material You" theme colors. Fallback light palette; values-night has the dark one
+     and the -v31 folders map these to the system's wallpaper-based dynamic colors. -->
+<resources>
+    <color name="my_keyboard_background">#FFECEEF2</color>
+    <color name="my_key">#FFFFFFFF</color>
+    <color name="my_key_pressed">#FFD3D7DD</color>
+    <color name="my_key_functional">#FFD5DCE6</color>
+    <color name="my_key_functional_pressed">#FFB9C3D1</color>
+    <color name="my_key_modifier_on">#FFC2D6F7</color>
+    <color name="my_key_modifier_locked">#FF8AB4F8</color>
+    <color name="my_key_action">#FFA8C7FA</color>
+    <color name="my_key_action_pressed">#FF7FA9EE</color>
+    <color name="my_key_text">#FF1F1F1F</color>
+    <color name="my_key_hint">#FF5F6368</color>
+    <color name="my_suggestion_text">#FF1F1F1F</color>
+    <color name="my_suggestion_recommended">#FF0B57D0</color>
+    <color name="my_suggestion_other">#FF5F6368</color>
+</resources>

@@ -51,4 +51,9 @@
          to user's finger. -->
     <dimen name="keyboard_vertical_correction">-0.05in</dimen>
     <dimen name="candidate_min_touchable_width">0.3in</dimen>
+    <!-- Material You theme key geometry -->
+    <dimen name="my_key_inset_horizontal">2.5dp</dimen>
+    <dimen name="my_key_inset_vertical">3dp</dimen>
+    <dimen name="my_key_corner_radius">7dp</dimen>
+    <dimen name="my_key_padding">2dp</dimen>
 </resources>

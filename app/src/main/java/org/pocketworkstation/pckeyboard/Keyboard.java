@@ -360,6 +360,24 @@ public class Keyboard {
         private final static int[] KEY_STATE_NORMAL = {
         };
 
+        private final static int[] KEY_STATE_FUNCTIONAL = {
+            R.attr.state_functional
+        };
+
+        private final static int[] KEY_STATE_FUNCTIONAL_PRESSED = {
+            android.R.attr.state_pressed,
+            R.attr.state_functional
+        };
+
+        private final static int[] KEY_STATE_ACTION = {
+            R.attr.state_action
+        };
+
+        private final static int[] KEY_STATE_ACTION_PRESSED = {
+            android.R.attr.state_pressed,
+            R.attr.state_action
+        };
+
         private final static int[] KEY_STATE_PRESSED = {
             android.R.attr.state_pressed
         };
@@ -774,6 +792,10 @@ public class Keyboard {
                     } else {
                         states = KEY_STATE_NORMAL_OFF;
                     }
+                } else if (isActionKey()) {
+                    states = pressed ? KEY_STATE_ACTION_PRESSED : KEY_STATE_ACTION;
+                } else if (usesFunctionalBackground()) {
+                    states = pressed ? KEY_STATE_FUNCTIONAL_PRESSED : KEY_STATE_FUNCTIONAL;
                 } else {
                     if (pressed) {
                         states = KEY_STATE_PRESSED;
@@ -781,6 +803,19 @@ public class Keyboard {
                 }
             }
             return states;
+        }
+
+        /** The Enter / editor action key. */
+        public boolean isActionKey() {
+            return codes != null && codes.length > 0 && codes[0] == '\n';
+        }
+
+        /** Non-character keys such as Backspace, Tab, Esc or arrows, but not the space bar. */
+        public boolean usesFunctionalBackground() {
+            if (codes == null || codes.length == 0) return modifier;
+            int code = codes[0];
+            if (code == ' ') return false;
+            return modifier || code < 0 || code == '\t';
         }
 
         public String toString() {

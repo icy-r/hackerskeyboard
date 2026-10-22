@@ -72,9 +72,9 @@ public class CandidateView extends View {
 
     private static final int X_GAP = 10;
     
-    private final int mColorNormal;
-    private final int mColorRecommended;
-    private final int mColorOther;
+    private int mColorNormal;
+    private int mColorRecommended;
+    private int mColorOther;
     private final Paint mPaint;
     private final int mDescent;
     private boolean mScrolled;
@@ -94,6 +94,23 @@ public class CandidateView extends View {
      * @param context
      * @param attrs
      */
+    /** Override the suggestion text colors, e.g. to match the keyboard theme. */
+    public void setSuggestionColors(int normal, int recommended, int other) {
+        mColorNormal = normal;
+        mColorRecommended = recommended;
+        mColorOther = other;
+        mPaint.setColor(mColorNormal);
+        invalidate();
+    }
+
+    /** Restore the default suggestion text colors. */
+    public void resetSuggestionColors() {
+        Resources res = getResources();
+        setSuggestionColors(res.getColor(R.color.candidate_normal),
+                res.getColor(R.color.candidate_recommended),
+                res.getColor(R.color.candidate_other));
+    }
+
     public CandidateView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mSelectionHighlight = context.getResources().getDrawable(

@@ -84,4 +84,10 @@
 
     </declare-styleable>
 
+    <!-- Drawable states for key backgrounds: non-character keys (Enter, Backspace, Tab...)
+         and the editor action key. -->
+    <declare-styleable name="KeyStates">
+        <attr name="state_functional" format="boolean" />
+        <attr name="state_action" format="boolean" />
+    </declare-styleable>
 </resources>

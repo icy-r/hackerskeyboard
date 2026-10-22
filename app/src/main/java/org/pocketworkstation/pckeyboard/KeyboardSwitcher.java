@@ -59,7 +59,7 @@ public class KeyboardSwitcher implements
     // Symbols keyboard layout with the settings key
     public static final int KEYBOARDMODE_SYMBOLS_WITH_SETTINGS_KEY = R.id.mode_symbols_with_settings_key;
 
-    public static final String DEFAULT_LAYOUT_ID = "0";
+    public static final String DEFAULT_LAYOUT_ID = "8"; // Material You
     public static final String PREF_KEYBOARD_LAYOUT = "pref_keyboard_layout";
     private static final int[] THEMES = new int[] {
         R.layout.input_ics,
@@ -70,6 +70,7 @@ public class KeyboardSwitcher implements
         R.layout.input_material_light,
         R.layout.input_ics_darker,
         R.layout.input_material_black,
+        R.layout.input_material_you,
     };
 
     // Tables which contains resource ids for each character theme color
@@ -417,6 +418,12 @@ public class KeyboardSwitcher implements
 
     public int getKeyboardMode() {
         return mMode;
+    }
+
+    /** True if the current theme is the system-colored Material You theme. */
+    public boolean isMaterialYouTheme() {
+        return mLayoutId >= 0 && mLayoutId < THEMES.length
+                && THEMES[mLayoutId] == R.layout.input_material_you;
     }
 
     public boolean isAlphabetMode() {

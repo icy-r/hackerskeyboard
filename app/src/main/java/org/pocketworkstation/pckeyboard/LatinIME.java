@@ -750,7 +750,24 @@ public class LatinIME extends InputMethodService implements
             mCandidateView.setService(this);
             setCandidatesView(mCandidateViewContainer);
         }
+        applyCandidateTheme();
         return mCandidateViewContainer;
+    }
+
+    /** Make the suggestion strip match the keyboard theme. */
+    private void applyCandidateTheme() {
+        if (mCandidateViewContainer == null || mCandidateView == null) return;
+        if (mKeyboardSwitcher != null && mKeyboardSwitcher.isMaterialYouTheme()) {
+            mCandidateViewContainer.setBackgroundColor(
+                    ContextCompat.getColor(this, R.color.my_keyboard_background));
+            mCandidateView.setSuggestionColors(
+                    ContextCompat.getColor(this, R.color.my_suggestion_text),
+                    ContextCompat.getColor(this, R.color.my_suggestion_recommended),
+                    ContextCompat.getColor(this, R.color.my_suggestion_other));
+        } else {
+            mCandidateViewContainer.setBackgroundResource(R.drawable.keyboard_suggest_strip);
+            mCandidateView.resetSuggestionColors();
+        }
     }
 
     private void removeCandidateViewContainer() {
@@ -782,6 +799,7 @@ public class LatinIME extends InputMethodService implements
         sKeyboardSettings.editorInputType = attribute.inputType;
         // Retry in case the notification permission was granted after the setting was enabled.
         if (mKeyboardNotification) setNotification(true);
+        applyCandidateTheme();
 
         //Log.i("PCKeyboard", "onStartInputView " + attribute + ", inputType= " + Integer.toHexString(attribute.inputType) + ", restarting=" + restarting);
         LatinKeyboardView inputView = mKeyboardSwitcher.getInputView();

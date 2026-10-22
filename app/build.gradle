@@ -48,6 +48,13 @@ android {
     testOptions {
         unitTests {
             includeAndroidResources = true
+            all {
+                // Optional: let Robolectric fetch android-all jars from a Maven mirror.
+                if (project.hasProperty('robolectricRepositoryUrl')) {
+                    systemProperty 'robolectric.defaultRepositoryUrl',
+                            project.property('robolectricRepositoryUrl')
+                }
+            }
         }
     }
 }
@@ -57,4 +64,6 @@ dependencies {
     implementation 'androidx.core:core:1.16.0'
     implementation 'androidx.customview:customview:1.2.0'
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'androidx.test:core:1.6.1'
+    testImplementation 'org.robolectric:robolectric:4.16'
 }

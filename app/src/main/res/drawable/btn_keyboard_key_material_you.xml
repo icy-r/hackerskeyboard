@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Key background for the Material You theme: rounded, inset key faces.
+     Sticky modifiers (Shift/Ctrl/Alt/Fn) use the "functional" tint when off, a light
+     accent when on for the next key, and a strong accent when locked. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:latin="http://schemas.android.com/apk/res-auto">
+    <item android:state_active="true" android:state_pressed="true">
+        <inset android:insetLeft="@dimen/my_key_inset_horizontal"
+               android:insetRight="@dimen/my_key_inset_horizontal"
+               android:insetTop="@dimen/my_key_inset_vertical"
+               android:insetBottom="@dimen/my_key_inset_vertical">
+            <shape android:shape="rectangle">
+                <corners android:radius="@dimen/my_key_corner_radius" />
+                <padding android:left="@dimen/my_key_padding" android:right="@dimen/my_key_padding"
+                         android:top="@dimen/my_key_padding" android:bottom="@dimen/my_key_padding" />
+                <solid android:color="@color/my_key_modifier_locked" />
+            </shape>
+        </inset>
+    </item>
+    <item android:state_active="true">
+        <inset android:insetLeft="@dimen/my_key_inset_horizontal"
+               android:insetRight="@dimen/my_key_inset_horizontal"
+               android:insetTop="@dimen/my_key_inset_vertical"
+               android:insetBottom="@dimen/my_key_inset_vertical">
+            <shape android:shape="rectangle">
+                <corners android:radius="@dimen/my_key_corner_radius" />
+                <padding android:left="@dimen/my_key_padding" android:right="@dimen/my_key_padding"
+                         android:top="@dimen/my_key_padding" android:bottom="@dimen/my_key_padding" />
+                <solid android:color="@color/my_key_modifier_locked" />
+            </shape>
+        </inset>
+    </item>
+    <item android:state_checkable="true" android:state_checked="true" android:state_pressed="true">
+        <inset android:insetLeft="@dimen/my_key_inset_horizontal"
+               android:insetRight="@dimen/my_key_inset_horizontal"
+               android:insetTop="@dimen/my_key_inset_vertical"
+               android:insetBottom="@dimen/my_key_inset_vertical">
+            <shape android:shape="rectangle">
+                <corners android:radius="@dimen/my_key_corner_radius" />
+                <padding android:left="@dimen/my_key_padding" android:right="@dimen/my_key_padding"
+                         android:top="@dimen/my_key_padding" android:bottom="@dimen/my_key_padding" />
+                <solid android:color="@color/my_key_modifier_locked" />
+            </shape>
+        </inset>
+    </item>
+    <item android:state_checkable="true" android:state_pressed="true">
+        <inset android:insetLeft="@dimen/my_key_inset_horizontal"
+               android:insetRight="@dimen/my_key_inset_horizontal"
+               android:insetTop="@dimen/my_key_inset_vertical"
+               android:insetBottom="@dimen/my_key_inset_vertical">
+            <shape android:shape="rectangle">
+                <corners android:radius="@dimen/my_key_corner_radius" />
+                <padding android:left="@dimen/my_key_padding" android:right="@dimen/my_key_padding"
+                         android:top="@dimen/my_key_padding" android:bottom="@dimen/my_key_padding" />
+                <solid android:color="@color/my_key_functional_pressed" />
+            </shape>
+        </inset>
+    </item>
+    <item android:state_checkable="true" android:state_checked="true">
+        <inset android:insetLeft="@dimen/my_key_inset_horizontal"
+               android:insetRight="@dimen/my_key_inset_horizontal"
+               android:insetTop="@dimen/my_key_inset_vertical"
+               android:insetBottom="@dimen/my_key_inset_vertical">
+            <shape android:shape="rectangle">
+                <corners android:radius="@dimen/my_key_corner_radius" />
+                <padding android:left="@dimen/my_key_padding" android:right="@dimen/my_key_padding"
+                         android:top="@dimen/my_key_padding" android:bottom="@dimen/my_key_padding" />
+                <solid android:color="@color/my_key_modifier_on" />
+            </shape>
+        </inset>
+    </item>
+    <item android:state_checkable="true">
+        <inset android:insetLeft="@dimen/my_key_inset_horizontal"
+               android:insetRight="@dimen/my_key_inset_horizontal"
+               android:insetTop="@dimen/my_key_inset_vertical"
+               android:insetBottom="@dimen/my_key_inset_vertical">
+            <shape android:shape="rectangle">
+                <corners android:radius="@dimen/my_key_corner_radius" />
+                <padding android:left="@dimen/my_key_padding" android:right="@dimen/my_key_padding"
+                         android:top="@dimen/my_key_padding" android:bottom="@dimen/my_key_padding" />
+                <solid android:color="@color/my_key_functional" />
+            </shape>
+        </inset>
+    </item>
+    <item latin:state_action="true" android:state_pressed="true">
+        <inset android:insetLeft="@dimen/my_key_inset_horizontal"
+               android:insetRight="@dimen/my_key_inset_horizontal"
+               android:insetTop="@dimen/my_key_inset_vertical"
+               android:insetBottom="@dimen/my_key_inset_vertical">
+            <shape android:shape="rectangle">
+                <corners android:radius="@dimen/my_key_corner_radius" />
+                <padding android:left="@dimen/my_key_padding" android:right="@dimen/my_key_padding"
+                         android:top="@dimen/my_key_padding" android:bottom="@dimen/my_key_padding" />
+                <solid android:color="@color/my_key_action_pressed" />
+            </shape>
+        </inset>
+    </item>
+    <item latin:state_action="true">
+        <inset android:insetLeft="@dimen/my_key_inset_horizontal"
+               android:insetRight="@dimen/my_key_inset_horizontal"
+               android:insetTop="@dimen/my_key_inset_vertical"
+               android:insetBottom="@dimen/my_key_inset_vertical">
+            <shape android:shape="rectangle">
+                <corners android:radius="@dimen/my_key_corner_radius" />
+                <padding android:left="@dimen/my_key_padding" android:right="@dimen/my_key_padding"
+                         android:top="@dimen/my_key_padding" android:bottom="@dimen/my_key_padding" />
+                <solid android:color="@color/my_key_action" />
+            </shape>
+        </inset>
+    </item>
+    <item latin:state_functional="true" android:state_pressed="true">
+        <inset android:insetLeft="@dimen/my_key_inset_horizontal"
+               android:insetRight="@dimen/my_key_inset_horizontal"
+               android:insetTop="@dimen/my_key_inset_vertical"
+               android:insetBottom="@dimen/my_key_inset_vertical">
+            <shape android:shape="rectangle">
+                <corners android:radius="@dimen/my_key_corner_radius" />
+                <padding android:left="@dimen/my_key_padding" android:right="@dimen/my_key_padding"
+                         android:top="@dimen/my_key_padding" android:bottom="@dimen/my_key_padding" />
+                <solid android:color="@color/my_key_functional_pressed" />
+            </shape>
+        </inset>
+    </item>
+    <item latin:state_functional="true">
+        <inset android:insetLeft="@dimen/my_key_inset_horizontal"
+               android:insetRight="@dimen/my_key_inset_horizontal"
+               android:insetTop="@dimen/my_key_inset_vertical"
+               android:insetBottom="@dimen/my_key_inset_vertical">
+            <shape android:shape="rectangle">
+                <corners android:radius="@dimen/my_key_corner_radius" />
+                <padding android:left="@dimen/my_key_padding" android:right="@dimen/my_key_padding"
+                         android:top="@dimen/my_key_padding" android:bottom="@dimen/my_key_padding" />
+                <solid android:color="@color/my_key_functional" />
+            </shape>
+        </inset>
+    </item>
+    <item android:state_empty="true" android:state_pressed="true">
+        <inset android:insetLeft="@dimen/my_key_inset_horizontal"
+               android:insetRight="@dimen/my_key_inset_horizontal"
+               android:insetTop="@dimen/my_key_inset_vertical"
+               android:insetBottom="@dimen/my_key_inset_vertical">
+            <shape android:shape="rectangle">
+                <corners android:radius="@dimen/my_key_corner_radius" />
+                <padding android:left="@dimen/my_key_padding" android:right="@dimen/my_key_padding"
+                         android:top="@dimen/my_key_padding" android:bottom="@dimen/my_key_padding" />
+                <solid android:color="@color/my_key_pressed" />
+            </shape>
+        </inset>
+    </item>
+    <item android:state_empty="true" android:drawable="@android:color/transparent" />
+    <item android:state_pressed="true">
+        <inset android:insetLeft="@dimen/my_key_inset_horizontal"
+               android:insetRight="@dimen/my_key_inset_horizontal"
+               android:insetTop="@dimen/my_key_inset_vertical"
+               android:insetBottom="@dimen/my_key_inset_vertical">
+            <shape android:shape="rectangle">
+                <corners android:radius="@dimen/my_key_corner_radius" />
+                <padding android:left="@dimen/my_key_padding" android:right="@dimen/my_key_padding"
+                         android:top="@dimen/my_key_padding" android:bottom="@dimen/my_key_padding" />
+                <solid android:color="@color/my_key_pressed" />
+            </shape>
+        </inset>
+    </item>
+    <item>
+        <inset android:insetLeft="@dimen/my_key_inset_horizontal"
+               android:insetRight="@dimen/my_key_inset_horizontal"
+               android:insetTop="@dimen/my_key_inset_vertical"
+               android:insetBottom="@dimen/my_key_inset_vertical">
+            <shape android:shape="rectangle">
+                <corners android:radius="@dimen/my_key_corner_radius" />
+                <padding android:left="@dimen/my_key_padding" android:right="@dimen/my_key_padding"
+                         android:top="@dimen/my_key_padding" android:bottom="@dimen/my_key_padding" />
+                <solid android:color="@color/my_key" />
+            </shape>
+        </inset>
+    </item>
+</selector>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <inset android:insetLeft="@dimen/my_key_inset_horizontal"
+               android:insetRight="@dimen/my_key_inset_horizontal"
+               android:insetTop="@dimen/my_key_inset_vertical"
+               android:insetBottom="@dimen/my_key_inset_vertical">
+            <shape android:shape="rectangle">
+                <corners android:radius="@dimen/my_key_corner_radius" />
+                <solid android:color="@color/my_key_action" />
+            </shape>
+        </inset>
+    </item>
+    <item android:drawable="@android:color/transparent" />
+</selector>
