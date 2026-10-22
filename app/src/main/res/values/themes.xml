@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Settings and setup screens. Follows the system dark mode; Android 10+ uses
+         the device's own (Material You on Android 12+) look. -->
+    <style name="AppTheme" parent="@android:style/Theme.Material.Light.DarkActionBar" />
+</resources>

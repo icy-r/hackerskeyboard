@@ -14,4 +14,8 @@
     <color name="my_suggestion_text">#FFE3E3E3</color>
     <color name="my_suggestion_recommended">#FFA8C7FA</color>
     <color name="my_suggestion_other">#FF9AA0A6</color>
+    <!-- Setup screen -->
+    <color name="setup_card">#FF26282C</color>
+    <color name="setup_accent">#FFA8C7FA</color>
+    <color name="setup_on_accent">#FF062E6F</color>
 </resources>

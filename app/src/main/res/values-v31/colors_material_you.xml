@@ -15,4 +15,8 @@
     <color name="my_suggestion_text">@android:color/system_neutral1_900</color>
     <color name="my_suggestion_recommended">@android:color/system_accent1_600</color>
     <color name="my_suggestion_other">@android:color/system_neutral2_600</color>
+    <!-- Setup screen -->
+    <color name="setup_card">@android:color/system_neutral2_100</color>
+    <color name="setup_accent">@android:color/system_accent1_600</color>
+    <color name="setup_on_accent">@android:color/system_accent1_0</color>
 </resources>

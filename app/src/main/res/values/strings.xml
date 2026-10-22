@@ -666,6 +666,16 @@
     <string name="main_setup_input_lang">Input languages</string>
     <string name="main_setup_settings">Settings</string>
     <string name="main_setup_test">Test</string>
+    <string name="main_tagline">A full PC-style keyboard with Esc, Ctrl, Tab and arrow keys.</string>
+    <string name="main_step1_title">Enable the keyboard</string>
+    <string name="main_step1_summary">Turn on Hacker\'s Keyboard in the system keyboard list.</string>
+    <string name="main_step1_button">Enable</string>
+    <string name="main_step2_title">Switch to it</string>
+    <string name="main_step2_summary">Make Hacker\'s Keyboard the keyboard you type with.</string>
+    <string name="main_step2_button">Choose</string>
+    <string name="main_step_done">Done</string>
+    <string name="main_try_hint">Type here to try it</string>
+    <string name="main_setup_dictionaries">Dictionaries</string>
     <string name="main_body"><Data>
       <![CDATA["
         <h2>Enabling Hacker's Keyboard</h2>
@@ -674,7 +684,7 @@
         
         <h3>Add the keyboard to the system's input method list:</h3>
         <blockquote>
-          <p>&#8226; Open the system input settings configuration by pressing the <b>Enable Keyboard</b> button above.</p>
+          <p>&#8226; Open the system input settings configuration by pressing the <b>Enable</b> button above.</p>
           <p>&#8226; Find <i>Hacker's Keyboard</i> in the input method list, tap the checkmark to switch it on.</p>
           <p>&#8226; Acknowledge the warning shown by the system. The system always shows this message when enabling a third-party input method.</p>
           <p>&#8226; Press the <i>Back</i> button to return to this page.</p>
@@ -682,7 +692,7 @@
         
         <h3>Choose the currently active input method:</h3>
         <blockquote>
-          <p>&#8226; Press the <b>Set input method</b> button above.</p>
+          <p>&#8226; Press the <b>Choose</b> button above.</p>
           <p>&#8226; Select <i>Hacker's Keyboard</i> from the list.</p>
         </blockquote>
 
@@ -695,7 +705,7 @@
 
         <h3>Optional: Install completion dictionary packages:</h3>
         <blockquote>
-          <p>&#8226; Press the <b>More</b> button above to do a Play Store search for the keyboard's developer name, this will show free downloadable completion dictionary packages.</p>
+          <p>&#8226; Press the <b>Dictionaries</b> button above to do a Play Store search for the keyboard's developer name, this will show free downloadable completion dictionary packages.</p>
         </blockquote>
         
         <h2>Additional information</h2>

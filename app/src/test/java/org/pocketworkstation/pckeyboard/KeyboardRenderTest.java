@@ -15,6 +15,7 @@ import java.io.FileOutputStream;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.annotation.GraphicsMode;
@@ -73,6 +74,34 @@ public class KeyboardRenderTest {
             assertTrue(render(themed, layoutId, R.xml.kbd_full, name + "_full").length() > 0);
             assertTrue(render(themed, layoutId, R.xml.kbd_qwerty, name + "_4row").length() > 0);
         }
+    }
+
+    private void renderActivity(String name) throws Exception {
+        android.app.Activity activity = Robolectric.buildActivity(Main.class).setup().get();
+        View root = activity.getWindow().getDecorView();
+        int w = activity.getResources().getDisplayMetrics().widthPixels;
+        int h = activity.getResources().getDisplayMetrics().heightPixels;
+        root.measure(View.MeasureSpec.makeMeasureSpec(w, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(h, View.MeasureSpec.EXACTLY));
+        root.layout(0, 0, w, h);
+        Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        root.draw(new Canvas(bitmap));
+        File dir = new File("build/screenshots");
+        dir.mkdirs();
+        try (FileOutputStream os = new FileOutputStream(new File(dir, name + ".png"))) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
+        }
+    }
+
+    @Test
+    public void renderSetupScreen() throws Exception {
+        renderActivity("setup_light");
+    }
+
+    @Test
+    @Config(qualifiers = "w411dp-h914dp-port-night-xxhdpi")
+    public void renderSetupScreenNight() throws Exception {
+        renderActivity("setup_night");
     }
 
     @Test

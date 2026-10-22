@@ -14,6 +14,7 @@
             android:backupAgent="LatinIMEBackupAgent"
             android:restoreAnyVersion="true"
             android:killAfterRestore="false"
+            android:theme="@style/AppTheme"
             android:icon="@drawable/icon">
 
         <service android:name="LatinIME"

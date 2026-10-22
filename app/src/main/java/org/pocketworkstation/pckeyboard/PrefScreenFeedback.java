@@ -28,6 +28,7 @@ public class PrefScreenFeedback extends PreferenceActivity
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+        SystemBarInsets.apply(this);
         addPreferencesFromResource(R.xml.prefs_feedback);
         SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
         prefs.registerOnSharedPreferenceChangeListener(this);
