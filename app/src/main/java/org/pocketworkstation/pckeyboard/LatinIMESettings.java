@@ -19,6 +19,7 @@ package org.pocketworkstation.pckeyboard;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.backup.BackupManager;
 import android.content.DialogInterface;
@@ -27,6 +28,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
@@ -155,8 +157,21 @@ public class LatinIMESettings extends PreferenceActivity
             }
         }
         mVoiceOn = !(prefs.getString(VOICE_SETTINGS_KEY, mVoiceModeOff).equals(mVoiceModeOff));
+        if (LatinIME.PREF_KEYBOARD_NOTIFICATION.equals(key)
+                && prefs.getBoolean(key, false)) {
+            requestNotificationPermission();
+        }
         updateVoiceModeSummary();
         updateSummaries();
+    }
+
+    /** Android 13+ needs a runtime permission before the keyboard notification can be shown. */
+    private void requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
+                        != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[] { Manifest.permission.POST_NOTIFICATIONS }, 0);
+        }
     }
 
     static Map<Integer, String> INPUT_CLASSES = new HashMap<Integer, String>();

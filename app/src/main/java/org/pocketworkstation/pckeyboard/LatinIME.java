@@ -32,6 +32,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
@@ -46,6 +47,7 @@ import android.os.Vibrator;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.app.NotificationManagerCompat;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -412,7 +414,8 @@ public class LatinIME extends InputMethodService implements
         pFilter.addAction("android.intent.action.PACKAGE_ADDED");
         pFilter.addAction("android.intent.action.PACKAGE_REPLACED");
         pFilter.addAction("android.intent.action.PACKAGE_REMOVED");
-        registerReceiver(mPluginManager, pFilter);
+        ContextCompat.registerReceiver(this, mPluginManager, pFilter,
+                ContextCompat.RECEIVER_NOT_EXPORTED);
 
         LatinIMEUtil.GCUtils.getInstance().reset();
         boolean tryGC = true;
@@ -431,7 +434,8 @@ public class LatinIME extends InputMethodService implements
         // register to receive ringer mode changes for silent mode
         IntentFilter filter = new IntentFilter(
                 AudioManager.RINGER_MODE_CHANGED_ACTION);
-        registerReceiver(mReceiver, filter);
+        ContextCompat.registerReceiver(this, mReceiver, filter,
+                ContextCompat.RECEIVER_NOT_EXPORTED);
         prefs.registerOnSharedPreferenceChangeListener(this);
         setNotification(mKeyboardNotification);
     }
@@ -475,11 +479,17 @@ public class LatinIME extends InputMethodService implements
         }
     }
 
+    private boolean canPostNotifications() {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
+                || checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
+                        == PackageManager.PERMISSION_GRANTED;
+    }
+
     private void setNotification(boolean visible) {
         String ns = Context.NOTIFICATION_SERVICE;
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(ns);
 
-        if (visible && mNotificationReceiver == null) {
+        if (visible && mNotificationReceiver == null && canPostNotifications()) {
             createNotificationChannel();
             int icon = R.drawable.icon;
             CharSequence text = "Keyboard notification enabled.";
@@ -488,16 +498,22 @@ public class LatinIME extends InputMethodService implements
             // TODO: clean this up?
             mNotificationReceiver = new NotificationReceiver(this);
             final IntentFilter pFilter = new IntentFilter(NotificationReceiver.ACTION_SHOW);
-            pFilter.addAction(NotificationReceiver.ACTION_SETTINGS);
-            registerReceiver(mNotificationReceiver, pFilter);
-            
-            Intent notificationIntent = new Intent(NotificationReceiver.ACTION_SHOW);
-            PendingIntent contentIntent = PendingIntent.getBroadcast(getApplicationContext(), 1, notificationIntent, 0);
-            //PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+            ContextCompat.registerReceiver(this, mNotificationReceiver, pFilter,
+                    ContextCompat.RECEIVER_NOT_EXPORTED);
 
-            Intent configIntent = new Intent(NotificationReceiver.ACTION_SETTINGS);
+            // PendingIntents must be immutable on Android 12+, and the broadcast
+            // must be explicit so that it reaches the non-exported receiver.
+            int piFlags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
+            Intent notificationIntent = new Intent(NotificationReceiver.ACTION_SHOW)
+                    .setPackage(getPackageName());
+            PendingIntent contentIntent = PendingIntent.getBroadcast(getApplicationContext(), 1, notificationIntent, piFlags);
+
+            // Open settings directly; activity starts from a broadcast receiver
+            // ("notification trampolines") are blocked on Android 12+.
+            Intent configIntent = new Intent(this, LatinIMESettings.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PendingIntent configPendingIntent =
-                    PendingIntent.getBroadcast(getApplicationContext(), 2, configIntent, 0);
+                    PendingIntent.getActivity(getApplicationContext(), 2, configIntent, piFlags);
 
             String title = "Show Hacker's Keyboard";
             String body = "Select this to open the keyboard. Disable in settings.";
@@ -764,6 +780,8 @@ public class LatinIME extends InputMethodService implements
         sKeyboardSettings.editorFieldName = attribute.fieldName;
         sKeyboardSettings.editorFieldId = attribute.fieldId;
         sKeyboardSettings.editorInputType = attribute.inputType;
+        // Retry in case the notification permission was granted after the setting was enabled.
+        if (mKeyboardNotification) setNotification(true);
 
         //Log.i("PCKeyboard", "onStartInputView " + attribute + ", inputType= " + Integer.toHexString(attribute.inputType) + ", restarting=" + restarting);
         LatinKeyboardView inputView = mKeyboardSwitcher.getInputView();
