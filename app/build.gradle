@@ -1,14 +1,21 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+}
 
 android {
-    compileSdkVersion 26
+    namespace 'org.pocketworkstation.pckeyboard'
+    compileSdk 36
+    // NDK r28+ produces 16 KB page-aligned native libraries by default,
+    // which Google Play requires for apps targeting Android 15+.
+    ndkVersion '28.2.13676358'
+
     defaultConfig {
         applicationId 'org.pocketworkstation.pckeyboard'
-        minSdkVersion 14
-        targetSdkVersion 26
-        versionCode 1041001
-        versionName "v1.41.1"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        minSdk 21
+        targetSdk 36
+        versionCode 1042000
+        versionName "v1.42.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
                 cppFlags ""
@@ -18,29 +25,36 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    buildFeatures {
+        buildConfig true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     externalNativeBuild {
         cmake {
             path "CMakeLists.txt"
+            version "3.22.1"
         }
     }
-    productFlavors {
-    }
-    lintOptions {
+    lint {
         checkReleaseBuilds false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
-        //abortOnError false
+        abortOnError false
+    }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
     }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation "com.android.support:support-compat:26.0.0"
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation 'androidx.core:core:1.16.0'
+    implementation 'androidx.customview:customview:1.2.0'
+    testImplementation 'junit:junit:4.13.2'
 }
